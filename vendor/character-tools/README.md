@@ -1,0 +1,13 @@
+# Launcher character desktop tools
+
+Launcher-owned DSH 0.2.1-rc.2 Cordis bundle. It exposes six actual native tools only within the exact registered character agent scope. No global tool registrations and no role identity supplied by model arguments.
+
+The main process starts `CharacterToolsBridge`, adds its `environment()` only to the owned DSH child, installs this package in the web profile, and adds `@deepblue/dsh-character-tools` to the profile bundles. It also sets `DEEPBLUE_CHARACTER_DSH_ANCHOR` to the owned runtime's `node_modules/@deepseek-ai/dsh/package.json`; the isolated profile package resolves the exact host copy of `dsh-scope` through this anchor. Before the first character send, it registers the persisted role/thread mapping and awaits `waitReady(threadId)`. Register only after the user has enabled that role's desktop pet. Stop/unbind/archive immediately unregisters the thread, aborting active requests; the plugin removes the scope on its next refresh.
+
+`prepareCharacterToolsProfile(dshHome, bundledPackageDirectory)` installs these four package files and preserves the rest of the user's profile. Call it while the owned DSH host is stopped. Package dependencies resolve from the pinned DSH host installation, not from the launcher renderer. Missing services or bridge fail closed.
+
+The loopback bearer token never crosses the renderer bridge or model arguments. A new lease is minted on every revocation/re-enable; stale scopes cannot act for a newly bound session. Tool execution uses `exec.agent` object identity and its real ID, then the main process independently resolves that ID and lease to its role. No arbitrary audio path, endpoint, executable, or role is accepted by these tools.
+
+`read-only` DSH file policy remains unchanged. Pet expression tools invoke the explicitly enabled pet adapter; no filesystem/shell escalation is added. Node test uses the real DSH ToolRuntime, scope system, SandboxPolicy and SandboxedFileSystem: role sees six tools, ordinary/global scopes see zero, expression dispatch succeeds while file write still raises `FS_SANDBOX_DENIED`.
+
+Run `node --test vendor/character-tools/character-tools.test.mjs` and the main bridge/profile Vitest suites. `node scripts/qa-character-product-dsh.mjs` launches a real isolated rc.2 host and loopback-only synthetic model, checks scope acknowledgement before first send, a real model-requested tool call, ordinary-thread exclusion and stop/revocation. It does not execute a pet window. `--app-root <packaged resources/app>` verifies package dependency boundaries and the copied plugin resource files; it still uses a source-compiled character service rather than pretending to execute the packaged Electron main process.

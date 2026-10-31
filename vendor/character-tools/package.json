@@ -1,0 +1,10 @@
+{
+  "name": "@deepblue/dsh-character-tools",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.mjs",
+  "exports": { ".": "./index.mjs", "./cordis.patch.yml": "./cordis.patch.yml", "./package.json": "./package.json" },
+  "files": ["index.mjs", "cordis.patch.yml", "README.md"],
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
+  "peerDependencies": { "@deepseek-ai/dsh-scope": "0.2.1-rc.2", "@deepseek-ai/dsh-agent": "0.2.1-rc.2", "@deepseek-ai/dsh-tools": "0.2.1-rc.2" }
+}

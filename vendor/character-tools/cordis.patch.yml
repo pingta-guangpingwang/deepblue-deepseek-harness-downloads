@@ -1,0 +1,3 @@
+- insert:
+    - id: deepblue-character-tools
+      name: '@deepblue/dsh-character-tools'
