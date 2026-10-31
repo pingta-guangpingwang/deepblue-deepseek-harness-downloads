@@ -1,13 +1,13 @@
 [
   {
-    "version": "0.2.1",
-    "bytes": 219570141,
-    "sha256": "00e24f4db7843175b8373a7c7607eb07c603731059be5b70a807f4e8ee8c884a",
-    "manifestSha256": "4a7c1635f44bc5d299529207e6790d8262603173ff2a8af92a39df58fa5e552e",
-    "unpackedBytes": 424915602,
+    "version": "0.2.2",
+    "bytes": 219570051,
+    "sha256": "c2903edf8c94a564e841b7daee51ad2ef491e8ac3df7d5918bdf0c12bf165e69",
+    "manifestSha256": "704e10f592caf0322794984339ea50d774bf4d0512aaef367ba33f8081a12372",
+    "unpackedBytes": 424919423,
     "mirrors": [
-      "https://ailishishu-deepseek-harness.oss-cn-beijing.aliyuncs.com/modules/character-pet-runtime-0.2.1-win-x64-00e24f4db7843175.tar.gz",
-      "https://github.com/pingta-guangpingwang/deepblue-deepseek-harness-downloads/releases/download/character-pet-runtime-0.2.1/character-pet-runtime-0.2.1-win-x64.tar.gz"
+      "https://ailishishu-deepseek-harness.oss-cn-beijing.aliyuncs.com/modules/character-pet-runtime-0.2.2-win-x64-c2903edf8c94a564.tar.gz",
+      "https://github.com/pingta-guangpingwang/deepblue-deepseek-harness-downloads/releases/download/character-pet-runtime-0.2.2/character-pet-runtime-0.2.2-win-x64.tar.gz"
     ]
   }
 ]

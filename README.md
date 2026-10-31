@@ -6,10 +6,12 @@
 
 `vendor/character-tools` 为 DSH 角色作用域的六项桌宠工具适配，`vendor/character-pet` 是启动器管理桌宠所用的隔离启动与本机控制适配。原独立桌宠核心、形象素材和用户资料不包含在这个源码仓库；请勿把适配文件当作可独立启动的完整应用。构建脚本 `scripts/build-character-pet-module.mjs` 需要另外提供已授权、相符版本的桌宠源码和完整运行环境；具体命令见适配 README。
 
-完整受管桌宠运行包是单独的按需下载，版本 0.2.1，压缩大小 219,570,141 字节。`character-pet-runtime.json` 固定完整归档和文件清单的 SHA-256，并列出 OSS 与 GitHub 两个镜像。用户从角色页主动安装、绑定和开启，每个角色使用独立资料、端口、固定 DSH 对话；包不包含账号、密钥、QQ 历史或用户聊天。
+完整受管桌宠运行包是单独的按需下载，版本 0.2.2，压缩大小 219,570,051 字节。`character-pet-runtime.json` 固定完整归档和文件清单的 SHA-256，并列出 OSS 与 GitHub 两个镜像。用户从角色页主动安装、绑定和开启，每个角色使用独立资料、端口、固定 DSH 对话；包不包含账号、密钥、QQ 历史或用户聊天。
+
+0.2.2 修复 Windows 深层安装目录中形象空白的问题：受限本地协议读取资源，首帧绘制成功后才报告已开启。窗口标题显示角色名；“清空窗口”仅清除当前窗口显示，角色固定对话保留。0.2.1 存在长路径素材读取问题，仅保留历史审计，不再列入安装或回滚目录。
 
 - [GitHub 公共源码与插件](https://github.com/pingta-guangpingwang/deepblue-deepseek-harness-downloads/tree/character-plugins-0110)
 - [Gitee 镜像](https://gitee.com/wanggp123/deepseek-harness-skins/tree/character-plugins-0110)
-- [宠物按需运行包](https://github.com/pingta-guangpingwang/deepblue-deepseek-harness-downloads/releases/tag/character-pet-runtime-0.2.1)
+- [宠物按需运行包](https://github.com/pingta-guangpingwang/deepblue-deepseek-harness-downloads/releases/tag/character-pet-runtime-0.2.2)
 
 此模块发布不会改变启动器稳定版本或自动更新入口。
