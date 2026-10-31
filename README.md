@@ -8,5 +8,5 @@
 
 源码与模块分发分支：
 
-- GitHub：https://github.com/pingta-guangpingwang/deepblue-deepseek-harness-launcher/tree/character-plugins-0110
+- GitHub：https://github.com/pingta-guangpingwang/deepblue-deepseek-harness-downloads/tree/character-plugins-0110
 - Gitee：https://gitee.com/wanggp123/deepseek-harness-skins/tree/character-plugins-0110

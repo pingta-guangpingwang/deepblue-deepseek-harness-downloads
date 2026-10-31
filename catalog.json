@@ -9,7 +9,7 @@
     "sha256": "a126123d07344425ef0d3700ab158691356a5289c16860f10c1d2721de5369a3",
     "mirrors": [
       "https://gitee.com/wanggp123/deepseek-harness-skins/raw/character-plugins-0110/packages/character-knowledge-1.0.0.cjs",
-      "https://raw.githubusercontent.com/pingta-guangpingwang/deepblue-deepseek-harness-launcher/character-plugins-0110/packages/character-knowledge-1.0.0.cjs"
+      "https://raw.githubusercontent.com/pingta-guangpingwang/deepblue-deepseek-harness-downloads/character-plugins-0110/packages/character-knowledge-1.0.0.cjs"
     ]
   },
   {
@@ -22,7 +22,7 @@
     "sha256": "256d2abcfc0e555defd20becade81dce18abd0e97a0cc6cdb5f6967b836244c6",
     "mirrors": [
       "https://gitee.com/wanggp123/deepseek-harness-skins/raw/character-plugins-0110/packages/qq-channel-1.0.0.cjs",
-      "https://raw.githubusercontent.com/pingta-guangpingwang/deepblue-deepseek-harness-launcher/character-plugins-0110/packages/qq-channel-1.0.0.cjs"
+      "https://raw.githubusercontent.com/pingta-guangpingwang/deepblue-deepseek-harness-downloads/character-plugins-0110/packages/qq-channel-1.0.0.cjs"
     ]
   }
 ]
