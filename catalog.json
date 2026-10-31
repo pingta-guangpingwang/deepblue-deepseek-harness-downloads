@@ -1,0 +1,28 @@
+[
+  {
+    "id": "character-knowledge",
+    "kind": "native-adapter",
+    "name": "记忆与知识引擎",
+    "version": "1.0.0",
+    "abi": 1,
+    "bytes": 13404,
+    "sha256": "a126123d07344425ef0d3700ab158691356a5289c16860f10c1d2721de5369a3",
+    "mirrors": [
+      "https://gitee.com/wanggp123/deepseek-harness-skins/raw/character-plugins-0110/packages/character-knowledge-1.0.0.cjs",
+      "https://raw.githubusercontent.com/pingta-guangpingwang/deepblue-deepseek-harness-launcher/character-plugins-0110/packages/character-knowledge-1.0.0.cjs"
+    ]
+  },
+  {
+    "id": "qq-channel",
+    "kind": "native-adapter",
+    "name": "QQ 角色渠道",
+    "version": "1.0.0",
+    "abi": 1,
+    "bytes": 31708,
+    "sha256": "256d2abcfc0e555defd20becade81dce18abd0e97a0cc6cdb5f6967b836244c6",
+    "mirrors": [
+      "https://gitee.com/wanggp123/deepseek-harness-skins/raw/character-plugins-0110/packages/qq-channel-1.0.0.cjs",
+      "https://raw.githubusercontent.com/pingta-guangpingwang/deepblue-deepseek-harness-launcher/character-plugins-0110/packages/qq-channel-1.0.0.cjs"
+    ]
+  }
+]
