@@ -8,6 +8,8 @@ export interface CharacterInput {
   templateId?: string
   /** Content-addressed local image, resolved only by the existing main-side image service. */
   avatarId?: string
+  /** Independent local cover; never included in the model persona. */
+  coverId?: string
   persona: { fields: QQPersonaFields; additionalPrompt: string }
   model: { mode: 'inherit' | 'override'; providerId?: string; modelId?: string }
   preferences: { remember: boolean; startWithLauncher: boolean; keepRunningOnMinimize: boolean }
@@ -47,7 +49,7 @@ export const isCharacterThreadId = (value: unknown): value is string => text(val
 
 /** Renderer input is a complete settings snapshot, never runtime metadata or a path. */
 export function validateCharacterInput(value: unknown): CharacterInput {
-  if (!record(value) || !exactKeys(value, ['roleId', 'name', 'description', 'templateId', 'avatarId', 'persona', 'model', 'preferences', 'channels', 'extensions'])
+  if (!record(value) || !exactKeys(value, ['roleId', 'name', 'description', 'templateId', 'avatarId', 'coverId', 'persona', 'model', 'preferences', 'channels', 'extensions'])
     || (value.roleId !== undefined && !isCharacterRoleId(value.roleId))
     || (value.templateId !== undefined && !characterTemplates.some(template => template.id === value.templateId))
     || !record(value.persona) || !exactKeys(value.persona, ['fields', 'additionalPrompt'])
@@ -70,18 +72,19 @@ export function validateCharacterInput(value: unknown): CharacterInput {
     const persona = validateQQPersonaInput({ name: value.name, description: value.description, fields: value.persona.fields,
       additionalPrompt: value.persona.additionalPrompt, ...(value.avatarId !== undefined ? { avatarId: value.avatarId } : {}) })
     if (value.avatarId !== undefined && (typeof value.avatarId !== 'string' || value.avatarId.length !== 64)) throw invalid()
+    if (value.coverId !== undefined && (typeof value.coverId !== 'string' || !/^[a-f0-9]{64}$/u.test(value.coverId))) throw invalid()
     return structuredClone({ name: persona.name, description: persona.description,
       ...(value.roleId !== undefined ? { roleId: value.roleId } : {}), ...(value.templateId !== undefined ? { templateId: value.templateId as string } : {}),
-      ...(persona.avatarId ? { avatarId: persona.avatarId } : {}), persona: { fields: persona.fields, additionalPrompt: persona.additionalPrompt },
+      ...(persona.avatarId ? { avatarId: persona.avatarId } : {}), ...(value.coverId ? { coverId: value.coverId } : {}), persona: { fields: persona.fields, additionalPrompt: persona.additionalPrompt },
       model: value.model, preferences: value.preferences, channels: value.channels, extensions: value.extensions }) as CharacterInput
   } catch { throw invalid() }
 }
 
 /** Explicit projection for editing a persisted profile; runtime identities never become editable. */
 export function characterInputFromProfile(value: CharacterInput): CharacterInput {
-  const { roleId, name, description, templateId, avatarId, persona, model, preferences, channels, extensions } = value
+  const { roleId, name, description, templateId, avatarId, coverId, persona, model, preferences, channels, extensions } = value
   return validateCharacterInput({ ...(roleId !== undefined ? { roleId } : {}), name, description,
-    ...(templateId !== undefined ? { templateId } : {}), ...(avatarId !== undefined ? { avatarId } : {}), persona, model, preferences, channels, extensions })
+    ...(templateId !== undefined ? { templateId } : {}), ...(avatarId !== undefined ? { avatarId } : {}), ...(coverId !== undefined ? { coverId } : {}), persona, model, preferences, channels, extensions })
 }
 
 /** Same validated field definitions as QQ, with neutral local-chat framing. Image metadata is excluded. */

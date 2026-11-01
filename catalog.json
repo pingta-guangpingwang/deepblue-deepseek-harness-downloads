@@ -16,6 +16,19 @@
     "id": "qq-channel",
     "kind": "native-adapter",
     "name": "QQ 角色渠道",
+    "version": "1.0.1",
+    "abi": 1,
+    "bytes": 31965,
+    "sha256": "c0cbf9dfddae014e844debccaed63b40c615066a1ac21ac033b4386e69082659",
+    "mirrors": [
+      "https://gitee.com/wanggp123/deepseek-harness-skins/raw/character-plugins-0121/packages/qq-channel-1.0.1.cjs",
+      "https://raw.githubusercontent.com/pingta-guangpingwang/deepblue-deepseek-harness-downloads/character-plugins-0121/packages/qq-channel-1.0.1.cjs"
+    ]
+  },
+  {
+    "id": "qq-channel",
+    "kind": "native-adapter",
+    "name": "QQ 角色渠道",
     "version": "1.0.0",
     "abi": 1,
     "bytes": 31708,
