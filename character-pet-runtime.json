@@ -1,5 +1,16 @@
 [
   {
+    "version": "0.2.3",
+    "bytes": 219569295,
+    "sha256": "0a6106bb1dccafcc02ad5e5393377d70c0b6597861c320461cdb1b8b70af1cec",
+    "manifestSha256": "bc35202b5059722de75bd817e36b7d180f512ef63330aac95f97eccda8159b3c",
+    "unpackedBytes": 424922378,
+    "mirrors": [
+      "https://ailishishu-deepseek-harness.oss-cn-beijing.aliyuncs.com/modules/character-pet-runtime-0.2.3-win-x64-0a6106bb1dccafcc0.tar.gz",
+      "https://github.com/pingta-guangpingwang/deepblue-deepseek-harness-downloads/releases/download/character-pet-runtime-0.2.3/character-pet-runtime-0.2.3-win-x64.tar.gz"
+    ]
+  },
+  {
     "version": "0.2.2",
     "bytes": 219570051,
     "sha256": "c2903edf8c94a564e841b7daee51ad2ef491e8ac3df7d5918bdf0c12bf165e69",

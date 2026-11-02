@@ -8,7 +8,7 @@ const arg=name=>{const i=process.argv.indexOf(name);return i>=0?process.argv[i+1
 const source=path.resolve(arg('--source')||'../qq-desktop-companion/app-v02');
 const runtime=arg('--runtime');
 const out=arg('--out');
-const version='0.2.2';
+const version='0.2.3';
 if(!runtime||!out)throw Error('Usage: node scripts/build-character-pet-module.mjs --source APP_SOURCE --runtime PORTABLE_RUNTIME_DIRECTORY --out NEW_OUTPUT_DIRECTORY');
 const target=path.resolve(out),runtimeRoot=path.resolve(runtime);
 for(const base of [repo,source,runtimeRoot]){const relative=path.relative(target,base);if(!relative||!relative.startsWith('..')&&!path.isAbsolute(relative))throw Error('Output must not contain source or runtime');}

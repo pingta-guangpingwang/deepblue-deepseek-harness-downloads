@@ -1,1 +1,2 @@
 packages/*.cjs -text
+vendor/character-pet/*.cjs -text

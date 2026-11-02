@@ -18,3 +18,15 @@
 本机验收：`node scripts/qa-character-pet-package.mjs --metadata <module-metadata.json> --out <全新证据目录>`。该脚本真实解压并验证完整包，不启动桌宠或调用模型；窗口、动作与真实 DSH 聊天另由启动器 UI 验收。
 
 资源回归：`node scripts/qa-character-pet-renderer.mjs --app-root <已校验安装包的 resources/app> --out <全新证据目录>`。它核对与包内完全同 SHA 的 Electron 引擎，在隐藏窗口验证长路径素材、真实首帧像素与十项动作帧解码，不读取用户账户或调用模型。此检查不替代最终可见窗口与角色聊天验收。0.2.1 存在长路径空白形象问题，不应列为用户回滚目标。
+
+## 0.2.3 发布校验
+
+0.2.3 修复空闲动画短暂缓冲反复重置自主活动时钟，以及设置菜单关闭后的恢复行为。自然模式、隐藏/菜单/手动活动暂停边界有行为回归；本机 197 项测试通过。原生启用后连续观察 45144 ms，首次自主 eat 动作出现在 25544 ms；关闭后观察 35010 ms，没有新增自主动作。此记录不表示已测试所有机器或所有插件组合。
+
+- 归档：`character-pet-runtime-0.2.3-win-x64.tar.gz`，219569295 bytes
+- SHA-256：`0a6106bb1dccafcc02ad5e5393377d70c0b6597861c320461cdb1b8b70af1cec`
+- managed-pet.json SHA-256：`bc35202b5059722de75bd817e36b7d180f512ef63330aac95f97eccda8159b3c`
+- 解压文件总大小：424922378 bytes，1076 个文件
+- 0.2.2 继续保留为可信回退。受管适配三份源码与本次已验归档内对应文件完全相同。
+
+下载镜像与大小/哈希由仓库根目录 `character-pet-runtime.json` 固定；宠物素材及上游完整运行环境在独立运行包中，未混入知识或 QQ CJS 插件。

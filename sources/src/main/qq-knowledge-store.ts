@@ -1,7 +1,7 @@
 import { closeSync, existsSync, fsyncSync, fstatSync, mkdirSync, openSync, readSync, renameSync, unlinkSync, writeFileSync } from 'node:fs'
 import { randomUUID } from 'node:crypto'
 import path from 'node:path'
-import type { QQKnowledgeNode } from '../shared/qq-enhancements'
+import type { QQKnowledgeNode, QQKnowledgeRetrievalOptions } from '../shared/qq-enhancements'
 
 const LIMIT = { nodes: 512, bytes: 1024 * 1024, title: 80, text: 2000, source: 120, input: 8000, fact: 160 }
 const CORRUPT = 'QQ knowledge store is corrupt or exceeds limits.'
@@ -80,6 +80,33 @@ function extract(user: string): Fact[] {
       title: name ? '称呼' : trigger === '我喜欢' ? '喜欢' : trigger === '我不喜欢' ? '不喜欢' : trigger === '我们约定' ? '约定' : '记住', text })
   }
   return facts
+}
+
+/** Shared host/plugin ranking. Filter authorized subjects and enabled sources before topK. */
+export function retrieveQQKnowledgeNodes(nodes: QQKnowledgeNode[], scope: string, subjectQQ: string, text: string,
+  options: QQKnowledgeRetrievalOptions, time = Date.now()): QQKnowledgeNode[] {
+  subject(scopeFields(scope), subjectQQ, true)
+  if (!options || !Number.isInteger(options.topK) || options.topK < 1 || options.topK > 8 || !Number.isInteger(options.retentionDays)
+    || options.retentionDays < 1 || options.retentionDays > 365 || typeof text !== 'string' || text.length > LIMIT.input
+    || (options.sourceTypes !== undefined && (!Array.isArray(options.sourceTypes) || options.sourceTypes.length > 2
+      || Array.from(options.sourceTypes).some(value => value !== 'automatic' && value !== 'manual')))
+    || !Array.isArray(nodes) || nodes.length > LIMIT.nodes || !Number.isFinite(time)) throw new Error('Invalid QQ knowledge retrieval options.')
+  const query = normalized(text).trim(), tokens = new Set<string>()
+  for (const run of query.match(/[\p{L}\p{N}]+/gu) ?? []) {
+    if (/\p{Script=Han}/u.test(run)) { for (let i = 0; i < run.length; i++) tokens.add(run.slice(i, i + 2)) }
+    else if (run.length > 1) tokens.add(run)
+  }
+  return nodes.filter(node => node.scope === scope && (node.subjectQQ === subjectQQ || (node.subjectQQ === '' && node.category === 'knowledge'))
+    && (options.sourceTypes === undefined || options.sourceTypes.includes(node.source === AUTO_SOURCE ? 'automatic' : 'manual')))
+    .map((node, index) => {
+      const age = Math.max(0, time - Date.parse(node.updatedAt)) / 86400000
+      const haystack = normalized(`${node.title} ${node.text}`)
+      let match = query && haystack.includes(query) ? 12 : 0
+      for (const token of tokens) if (haystack.includes(token)) match += token.length === 1 ? 0.5 : 3
+      const basic = node.category === 'profile' ? 2 : node.category === 'preference' ? 1 : 0
+      return { node, index, score: age >= options.retentionDays ? 0 : (match + basic) * Math.exp(-age / 30) }
+    }).filter(item => item.score > 0)
+    .sort((left, right) => right.score - left.score || left.index - right.index).slice(0, options.topK).map(item => item.node)
 }
 
 /**
@@ -164,25 +191,7 @@ export class QQKnowledgeStore {
     }
     this.write(nodes)
   }
-  retrieve(scope: string, subjectQQ: string, text: string, options: { topK: number; retentionDays: number }): QQKnowledgeNode[] {
-    subject(scopeFields(scope), subjectQQ, true)
-    if (!options || !Number.isInteger(options.topK) || options.topK < 1 || options.topK > 8 || !Number.isInteger(options.retentionDays)
-      || options.retentionDays < 1 || options.retentionDays > 365 || typeof text !== 'string' || text.length > LIMIT.input) throw new Error('Invalid QQ knowledge retrieval options.')
-    const query = normalized(text).trim(), tokens = new Set<string>()
-    for (const run of query.match(/[\p{L}\p{N}]+/gu) ?? []) {
-      if (/\p{Script=Han}/u.test(run)) { for (let i = 0; i < run.length; i++) tokens.add(run.slice(i, i + 2)) }
-      else if (run.length > 1) tokens.add(run)
-    }
-    const time = this.clock()
-    return this.read().filter(node => node.scope === scope && (node.subjectQQ === subjectQQ || (node.subjectQQ === '' && node.category === 'knowledge')))
-      .map((node, index) => {
-        const age = Math.max(0, time - Date.parse(node.updatedAt)) / 86400000
-        const haystack = normalized(`${node.title} ${node.text}`)
-        let match = query && haystack.includes(query) ? 12 : 0
-        for (const token of tokens) if (haystack.includes(token)) match += token.length === 1 ? 0.5 : 3
-        const basic = node.category === 'profile' ? 2 : node.category === 'preference' ? 1 : 0
-        return { node, index, score: age >= options.retentionDays ? 0 : (match + basic) * Math.exp(-age / 30) }
-      }).filter(item => item.score > 0)
-      .sort((left, right) => right.score - left.score || left.index - right.index).slice(0, options.topK).map(item => item.node)
+  retrieve(scope: string, subjectQQ: string, text: string, options: QQKnowledgeRetrievalOptions): QQKnowledgeNode[] {
+    return retrieveQQKnowledgeNodes(this.read(), scope, subjectQQ, text, options, this.clock())
   }
 }

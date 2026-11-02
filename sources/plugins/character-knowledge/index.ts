@@ -3,7 +3,7 @@ import type { CharacterKnowledgeAdapter } from '../../src/shared/character-plugi
 
 export const abi = 1
 export const id = 'character-knowledge'
-export const version = '1.0.0'
+export const version = '1.0.1'
 /** Shares the proven storage format; built artifact contains the engine, no host code import. */
 export function createKnowledge(directory: string): CharacterKnowledgeAdapter {
   return new QQKnowledgeStore(directory)

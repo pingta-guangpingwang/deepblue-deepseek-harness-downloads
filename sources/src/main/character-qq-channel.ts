@@ -9,7 +9,7 @@ export interface CharacterQQEngine {
   readonly running: boolean
   savedAccountQQ(): Promise<string>
   snapshot(): Promise<{ status: string }>
-  copyConfigurationTo(target: any, character: { expectedAccountQQ: string; name: string; persona: string; model?: { provider: string; model: string } }): Promise<void>
+  copyConfigurationTo(target: any, character: { expectedAccountQQ: string; name: string; persona: string; model?: { provider: string; model: string }; memoryEnabled?: boolean; mediaEnabled?: boolean }): Promise<void>
   start(options: { startupTest: boolean }): Promise<void>
   stop(): Promise<void>
 }
@@ -156,7 +156,9 @@ export class CharacterQQChannels {
         owner.engine = await this.options.createCompanion(role); valid()
         if (owner.engine === this.options.legacy) throw new Error('角色渠道必须使用独立引擎')
         await this.options.legacy.copyConfigurationTo(owner.engine, { expectedAccountQQ: binding.accountQQ, name: role.name,
-          persona, ...(role.model.mode === 'override' ? { model: { provider: role.model.providerId!, model: role.model.modelId! } } : {}) })
+          persona, memoryEnabled: role.extensions.some(item => item.enabled && (item.id === 'tree-memory' || item.id === 'living-memory' && role.preferences.remember)),
+          mediaEnabled: role.extensions.some(item => item.enabled && item.id === 'meme-manager'),
+          ...(role.model.mode === 'override' ? { model: { provider: role.model.providerId!, model: role.model.modelId! } } : {}) })
         valid(); if (!await this.options.roleIsRunning(roleId)) throw cancelled()
         await owner.engine.start({ startupTest: false }); valid()
         if (!owner.engine.running) throw new Error('QQ 渠道尚未连接')
